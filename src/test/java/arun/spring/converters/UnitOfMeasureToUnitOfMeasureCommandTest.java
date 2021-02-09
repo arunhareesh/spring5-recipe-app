@@ -20,6 +20,11 @@ class UnitOfMeasureToUnitOfMeasureCommandTest {
     }
 
     @Test
+    public void testNullObjectConvert() throws Exception {
+        assertNull(converter.convert(null));
+    }
+
+    @Test
     public void testEmptyObj() throws Exception {
         assertNotNull(converter.convert(new UnitOfMeasure()));
     }
