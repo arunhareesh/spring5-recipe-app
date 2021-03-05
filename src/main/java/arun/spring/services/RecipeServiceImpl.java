@@ -4,6 +4,7 @@ import arun.spring.commands.RecipeCommand;
 import arun.spring.converters.RecipeCommandToRecipe;
 import arun.spring.converters.RecipeToRecipeCommand;
 import arun.spring.domain.Recipe;
+import arun.spring.exceptions.NotFoundException;
 import arun.spring.repositories.RecipeRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -41,7 +42,7 @@ public class RecipeServiceImpl implements RecipeService {
     public Recipe findById(Long l) {
         Optional<Recipe> recipeOptional = recipeRepository.findById(l);
         if (!recipeOptional.isPresent()) {
-            throw new RuntimeException("Recipe Not Found!");
+            throw new NotFoundException("Recipe Not Found!. For Id value: " + l.toString());
         }
 
         return recipeOptional.get();

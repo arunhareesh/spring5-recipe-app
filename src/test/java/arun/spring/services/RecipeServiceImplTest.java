@@ -4,12 +4,14 @@ import arun.spring.commands.RecipeCommand;
 import arun.spring.converters.RecipeCommandToRecipe;
 import arun.spring.converters.RecipeToRecipeCommand;
 import arun.spring.domain.Recipe;
+import arun.spring.exceptions.NotFoundException;
 import arun.spring.repositories.RecipeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import javax.swing.text.html.Option;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -100,5 +102,15 @@ class RecipeServiceImplTest {
 
         //then
         verify(recipeRepository, times(1)).deleteById(anyLong());
+    }
+
+    @Test
+    public void getRecipeByIdNotFound() throws Exception{
+        Optional<Recipe> recipeOptional = Optional.empty();
+        when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
+        NotFoundException notFoundException = assertThrows(NotFoundException.class,
+                () -> recipeService.findById(1l),
+                "Expected doThing() to throw, but it didn't");
+        assertTrue(notFoundException.getMessage().contains("Recipe Not Found!"));
     }
 }
